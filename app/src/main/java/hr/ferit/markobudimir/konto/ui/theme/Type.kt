@@ -66,27 +66,27 @@ val Typography = Typography(
     ),
     titleSmall = TextStyle(
         fontFamily = latoFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 14.sp
-    ),
-    bodyLarge = TextStyle(
-        fontFamily = robotoFamily,
         fontWeight = FontWeight.Black,
         fontSize = 14.sp
     ),
-    bodyMedium = TextStyle(
-        fontFamily = robotoFamily,
+    bodyLarge = TextStyle(
+        fontFamily = latoFamily,
         fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = latoFamily,
+        fontWeight = FontWeight.Light,
         fontSize = 12.sp
     ),
     bodySmall = TextStyle(
-        fontFamily = robotoFamily,
-        fontWeight = FontWeight.Normal,
+        fontFamily = latoFamily,
+        fontWeight = FontWeight.Light,
         fontSize = 8.sp
     ),
     labelLarge = TextStyle(
         fontFamily = robotoFamily,
-        fontWeight = FontWeight.Light,
+        fontWeight = FontWeight.Normal,
         fontSize = 14.sp
     ),
     labelMedium = TextStyle(

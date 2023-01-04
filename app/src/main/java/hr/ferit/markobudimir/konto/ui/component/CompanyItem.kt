@@ -39,11 +39,13 @@ fun CompanyItem(
             Text(
                 text = companyItemViewState.name,
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
+                style = MaterialTheme.typography.bodyMedium
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraSmall))
             Text(
                 text = companyItemViewState.value,
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }
