@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -31,21 +32,21 @@ fun LoginScreen(
             .padding(top = MaterialTheme.spacing.extraExtraLarge)
     ) {
         Text(
-            text = "Konto",
+            text = stringResource(id = R.string.app_name),
             style = MaterialTheme.typography.displayLarge,
             color = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraExtraLarge))
 
         InputField(
-            placeholder = "Email",
+            placeholder = stringResource(id = R.string.email_placeholder),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraSmall))
 
         var passwordVisible by remember { mutableStateOf(false) }
         InputField(
-            placeholder = "Password",
+            placeholder = stringResource(id = R.string.password_placeholder),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
@@ -53,7 +54,9 @@ fun LoginScreen(
                     painterResource(id = R.drawable.ic_baseline_visibility_24)
                 else painterResource(id = R.drawable.ic_baseline_visibility_off_24)
 
-                val description = if (passwordVisible) "Hide password" else "Show password"
+                val description = if (passwordVisible)
+                    stringResource(id = R.string.password_icon_description_hide)
+                else stringResource(id = R.string.password_icon_description_show)
 
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
                     Icon(painter = image, description)
@@ -73,7 +76,7 @@ fun LoginScreen(
             ),
             shape = MaterialTheme.shapes.large
         ) {
-            Text(text = "Login")
+            Text(text = stringResource(id = R.string.login_button))
         }
     }
 }
