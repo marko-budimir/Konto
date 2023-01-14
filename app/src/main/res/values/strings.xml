@@ -6,4 +6,10 @@
     <string name="password_icon_description_hide">"Hide password"</string>
     <string name="password_icon_description_show">"Show password"</string>
     <string name="login_button">Login</string>
+
+    <string name="revenues">Prihodi</string>
+    <string name="expenses">Rashodi</string>
+    <string name="profit">Dobit</string>
+    <string name="customer_obligations">Obveze kupaca</string>
+    <string name="debt">Dug</string>
 </resources>

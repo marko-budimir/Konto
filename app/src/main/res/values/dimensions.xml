@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="login_button_height">48dp</dimen>
+
+    <dimen name="obligation_debt_button_height">56dp</dimen>
+    <dimen name="profits_card_elevation">4dp</dimen>
 </resources>

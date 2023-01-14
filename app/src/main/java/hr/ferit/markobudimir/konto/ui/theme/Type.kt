@@ -26,32 +26,32 @@ val robotoFamily = FontFamily(
 val Typography = Typography(
     displayLarge = TextStyle(
         fontFamily = latoFamily,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Black,
         fontSize = 51.sp
     ),
     displayMedium = TextStyle(
         fontFamily = latoFamily,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Black,
         fontSize = 45.sp
     ),
     displaySmall = TextStyle(
         fontFamily = latoFamily,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Black,
         fontSize = 40.sp
     ),
     headlineLarge = TextStyle(
         fontFamily = latoFamily,
-        fontWeight = FontWeight.Black,
+        fontWeight = FontWeight.Bold,
         fontSize = 32.sp
     ),
     headlineMedium = TextStyle(
         fontFamily = latoFamily,
-        fontWeight = FontWeight.Black,
+        fontWeight = FontWeight.Bold,
         fontSize = 28.sp
     ),
     headlineSmall = TextStyle(
         fontFamily = latoFamily,
-        fontWeight = FontWeight.Black,
+        fontWeight = FontWeight.Normal,
         fontSize = 24.sp
     ),
     titleLarge = TextStyle(
@@ -66,7 +66,7 @@ val Typography = Typography(
     ),
     titleSmall = TextStyle(
         fontFamily = latoFamily,
-        fontWeight = FontWeight.Black,
+        fontWeight = FontWeight.Normal,
         fontSize = 14.sp
     ),
     bodyLarge = TextStyle(
