@@ -76,7 +76,10 @@ fun LoginScreen(
             ),
             shape = MaterialTheme.shapes.large
         ) {
-            Text(text = stringResource(id = R.string.login_button))
+            Text(
+                text = stringResource(id = R.string.login_button),
+                style = MaterialTheme.typography.titleMedium
+            )
         }
     }
 }
