@@ -12,4 +12,13 @@
     <string name="profit">Dobit</string>
     <string name="customer_obligations">Obveze kupaca</string>
     <string name="debt">Dug</string>
+
+    <string name="bill">Račun</string>
+    <string name="bill_number">Broj računa</string>
+    <string name="issue_date">Datum izdavanja</string>
+    <string name="due_date">Datum dospijeća</string>
+    <string name="delivery_date">Datum isporuke</string>
+    <string name="amount">Iznos</string>
+    <string name="send">Pošalji</string>
+    <string name="history">Povijest</string>
 </resources>
