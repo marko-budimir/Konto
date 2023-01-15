@@ -2,10 +2,10 @@
     <string name="app_name">Konto</string>
     
     <string name="email_placeholder">Email</string>
-    <string name="password_placeholder">Password</string>
+    <string name="password_placeholder">Lozinka</string>
     <string name="password_icon_description_hide">"Hide password"</string>
     <string name="password_icon_description_show">"Show password"</string>
-    <string name="login_button">Login</string>
+    <string name="login_button">Prijava</string>
 
     <string name="revenues">Prihodi</string>
     <string name="expenses">Rashodi</string>

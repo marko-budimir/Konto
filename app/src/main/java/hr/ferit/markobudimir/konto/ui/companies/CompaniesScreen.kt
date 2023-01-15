@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import hr.ferit.markobudimir.konto.mock.CompaniesMock
-import hr.ferit.markobudimir.konto.ui.component.CompaniesViewState
 import hr.ferit.markobudimir.konto.ui.component.CompanyItem
 import hr.ferit.markobudimir.konto.ui.theme.KontoTheme
 import hr.ferit.markobudimir.konto.ui.theme.spacing

@@ -2,21 +2,22 @@ package hr.ferit.markobudimir.konto.ui.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import hr.ferit.markobudimir.konto.R
+import hr.ferit.markobudimir.konto.ui.component.ChangeScreenButton
+import hr.ferit.markobudimir.konto.ui.component.ProfitsCard
 import hr.ferit.markobudimir.konto.ui.theme.KontoTheme
 import hr.ferit.markobudimir.konto.ui.theme.spacing
 
 const val NEGATIVE_BALANCE_TAG = "-"
-const val WIDTH_FACTOR = 0.9f
+const val WIDTH_PERCENTAGE = 0.9f
 
 @Composable
 fun HomeScreen(
@@ -35,7 +36,7 @@ fun HomeScreen(
         Column(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium),
             modifier = modifier
-                .fillMaxWidth(WIDTH_FACTOR)
+                .fillMaxWidth(WIDTH_PERCENTAGE)
                 .padding(top = MaterialTheme.spacing.medium)
         ) {
             Text(
@@ -67,76 +68,17 @@ fun HomeScreen(
         }
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
 
-        ObligationAndDebtButton(
+        ChangeScreenButton(
             text = stringResource(id = R.string.customer_obligations),
+            widthPercentage = WIDTH_PERCENTAGE,
             onClick = onCustomerObligationsButtonClick
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
 
-        ObligationAndDebtButton(
+        ChangeScreenButton(
             text = stringResource(id = R.string.debt),
+            widthPercentage = WIDTH_PERCENTAGE,
             onClick = onDebtButtonClick
-        )
-    }
-}
-
-@Composable
-fun ProfitsCard(
-    title: String,
-    value: String,
-    color: Color,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        shape = MaterialTheme.shapes.small,
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = dimensionResource(id = R.dimen.profits_card_elevation)
-        ),
-        modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background,
-            contentColor = MaterialTheme.colorScheme.onBackground
-        )
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = MaterialTheme.spacing.small)
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium,
-                color = color
-            )
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
-            Text(
-                text = value,
-                style = MaterialTheme.typography.headlineSmall
-            )
-        }
-    }
-}
-
-@Composable
-fun ObligationAndDebtButton(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth(WIDTH_FACTOR)
-            .height(dimensionResource(id = R.dimen.obligation_debt_button_height)),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.tertiary,
-            contentColor = MaterialTheme.colorScheme.onTertiary
-        ),
-        shape = MaterialTheme.shapes.large
-    ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.titleMedium
         )
     }
 }
