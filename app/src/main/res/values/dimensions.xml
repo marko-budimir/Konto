@@ -4,4 +4,6 @@
 
     <dimen name="obligation_debt_button_height">56dp</dimen>
     <dimen name="profits_card_elevation">4dp</dimen>
+
+    <dimen name="settings_card_elevation">8dp</dimen>
 </resources>

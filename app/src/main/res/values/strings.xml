@@ -21,4 +21,14 @@
     <string name="amount">Iznos</string>
     <string name="send">Pošalji</string>
     <string name="history">Povijest</string>
+
+    <string name="pin">OIB: </string>
+    <string name="settings">Postavke</string>
+    <string name="dark_mode">Tamni način</string>
+    <string name="notifications">Obavijesti</string>
+    <string name="day_of_month">Dan u mjesecu</string>
+    <string name="time">Vrijeme</string>
+    <string name="logout">Odjava</string>
+    <string name="owner">"Vlasnik: "</string>
+
 </resources>
