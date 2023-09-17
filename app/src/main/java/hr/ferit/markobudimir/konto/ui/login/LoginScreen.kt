@@ -1,5 +1,7 @@
 package hr.ferit.markobudimir.konto.ui.login
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -8,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -20,8 +23,25 @@ import hr.ferit.markobudimir.konto.ui.theme.KontoTheme
 import hr.ferit.markobudimir.konto.ui.theme.spacing
 
 @Composable
+fun LoginRoute(
+    onNavigateToMain: () -> Unit,
+    viewModel: LoginViewModel
+) {
+    val viewState: LoginViewState by viewModel.loginViewState.collectAsState()
+    LoginScreen(
+        viewState = viewState,
+        onLoginButtonClick = { email, password -> viewModel.login(email, password) },
+        resetLoginViewState = { viewModel.resetLoginViewState() },
+        onNavigateToMain = onNavigateToMain,
+    )
+}
+
+@Composable
 fun LoginScreen(
-    onLoginButtonClick: () -> Unit,
+    viewState: LoginViewState,
+    onLoginButtonClick: (String, String) -> Unit,
+    onNavigateToMain: () -> Unit,
+    resetLoginViewState: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -38,9 +58,13 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraExtraLarge))
 
+        var email by remember { mutableStateOf("") }
+        var password by remember { mutableStateOf("") }
+
         InputField(
             placeholder = stringResource(id = R.string.email_placeholder),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            onValueChange = { email = it }
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraSmall))
 
@@ -61,12 +85,22 @@ fun LoginScreen(
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
                     Icon(painter = image, description)
                 }
-            }
+            },
+            onValueChange = { password = it }
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            if (viewState.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .height(dimensionResource(id = R.dimen.login_button_height))
+                        .width(dimensionResource(id = R.dimen.login_button_height))
+                )
+            }
+        }
 
         Button(
-            onClick = onLoginButtonClick,
+            onClick = { onLoginButtonClick(email, password) },
             modifier = Modifier
                 .fillMaxWidth(0.3f)
                 .height(dimensionResource(id = R.dimen.login_button_height)),
@@ -81,6 +115,22 @@ fun LoginScreen(
                 style = MaterialTheme.typography.titleMedium
             )
         }
+
+        if (viewState.isSuccess) {
+            onNavigateToMain()
+            Log.d("LoginScreen", "Login success")
+            resetLoginViewState()
+        }
+        val context = LocalContext.current
+        LaunchedEffect(key1 = viewState.isError) {
+            viewState.isError?.let { error ->
+                if (error.isNotEmpty() && error.isNotBlank()) {
+                    Log.d("LoginScreen", "Login error")
+                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
     }
 }
 
@@ -92,8 +142,10 @@ fun InputField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     trailingIcon: @Composable (() -> Unit)? = null,
+    onValueChange: (String) -> Unit = {}
 ) {
     var value by remember { mutableStateOf("") }
+    onValueChange(value)
     TextField(
         value = value,
         onValueChange = { value = it },
@@ -124,6 +176,11 @@ fun InputField(
 @Composable
 fun LoginScreenPreview() {
     KontoTheme {
-        LoginScreen(onLoginButtonClick = {})
+        LoginScreen(
+            viewState = LoginViewState(),
+            onLoginButtonClick = { email, password -> },
+            onNavigateToMain = {},
+            resetLoginViewState = {}
+        )
     }
 }

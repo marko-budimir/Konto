@@ -24,18 +24,20 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import hr.ferit.markobudimir.konto.mock.CompaniesMock
+import hr.ferit.markobudimir.konto.navigation.COMPANY_ID_KEY
+import hr.ferit.markobudimir.konto.navigation.CompaniesDestination
+import hr.ferit.markobudimir.konto.navigation.LoginDestination
+import hr.ferit.markobudimir.konto.navigation.NavigationItem
 import hr.ferit.markobudimir.konto.ui.billdetails.BillDetailsScreen
 import hr.ferit.markobudimir.konto.ui.companies.CompaniesScreen
 import hr.ferit.markobudimir.konto.ui.companies.CompaniesViewState
 import hr.ferit.markobudimir.konto.ui.home.HomeScreen
 import hr.ferit.markobudimir.konto.ui.home.HomeUserDataViewState
-import hr.ferit.markobudimir.konto.ui.login.LoginScreen
-import hr.ferit.markobudimir.konto.navigation.COMPANY_ID_KEY
-import hr.ferit.markobudimir.konto.navigation.CompaniesDestination
-import hr.ferit.markobudimir.konto.navigation.LoginDestination
-import hr.ferit.markobudimir.konto.navigation.NavigationItem
+import hr.ferit.markobudimir.konto.ui.login.LoginRoute
+import hr.ferit.markobudimir.konto.ui.login.LoginViewModel
 import hr.ferit.markobudimir.konto.ui.settings.SettingsScreen
 import hr.ferit.markobudimir.konto.ui.settings.SettingsUserDataViewState
+import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,14 +85,17 @@ fun MainScreen() {
                 modifier = Modifier.padding(padding)
             ) {
                 composable(LoginDestination.route) {
-                    LoginScreen(onLoginButtonClick = {
-                        navController.navigate(NavigationItem.HomeDestination.route) {
-                            popUpTo(LoginDestination.route) {
-                                saveState = true
-                                inclusive = true
+                    val viewModel: LoginViewModel = getViewModel()
+                    LoginRoute(
+                        onNavigateToMain = {
+                            navController.navigate(NavigationItem.HomeDestination.route) {
+                                popUpTo(LoginDestination.route) {
+                                    saveState = true
+                                    inclusive = true
+                                }
                             }
-                        }
-                    })
+                        }, viewModel = viewModel
+                    )
                 }
                 composable(NavigationItem.HomeDestination.route) {
                     HomeScreen(
