@@ -31,8 +31,8 @@ import hr.ferit.markobudimir.konto.navigation.NavigationItem
 import hr.ferit.markobudimir.konto.ui.billdetails.BillDetailsScreen
 import hr.ferit.markobudimir.konto.ui.companies.CompaniesScreen
 import hr.ferit.markobudimir.konto.ui.companies.CompaniesViewState
-import hr.ferit.markobudimir.konto.ui.home.HomeScreen
-import hr.ferit.markobudimir.konto.ui.home.HomeUserDataViewState
+import hr.ferit.markobudimir.konto.ui.home.HomeRoute
+import hr.ferit.markobudimir.konto.ui.home.HomeViewModel
 import hr.ferit.markobudimir.konto.ui.login.LoginRoute
 import hr.ferit.markobudimir.konto.ui.login.LoginViewModel
 import hr.ferit.markobudimir.konto.ui.settings.SettingsScreen
@@ -98,19 +98,15 @@ fun MainScreen() {
                     )
                 }
                 composable(NavigationItem.HomeDestination.route) {
-                    HomeScreen(
-                        viewState = HomeUserDataViewState(
-                            "Vers-konto d.o.o",
-                            "10.000,00€",
-                            "5.000,00€",
-                            "5.000,00€"
-                        ),
-                        onCustomerObligationsButtonClick = {
+                    val viewModel: HomeViewModel = getViewModel()
+                    HomeRoute(
+                        onNavigateToCustomerObligations = {
                             navController.navigate(CompaniesDestination.createNavigationRoute("Obveze kupaca"))
                         },
-                        onDebtButtonClick = {
+                        onNavigateToDebt = {
                             navController.navigate(CompaniesDestination.createNavigationRoute("Dug"))
                         },
+                        viewModel = viewModel
                     )
                 }
                 composable(NavigationItem.BillingDestination.route) {
