@@ -2,6 +2,7 @@ package hr.ferit.markobudimir.konto.ui.billdetails
 
 import android.app.DatePickerDialog
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import hr.ferit.markobudimir.konto.R
+import hr.ferit.markobudimir.konto.model.Bill
 import hr.ferit.markobudimir.konto.ui.billdetails.visualtransformation.CurrencyAmountInputVisualTransformation
 import hr.ferit.markobudimir.konto.ui.component.ChangeScreenButton
 import hr.ferit.markobudimir.konto.ui.theme.KontoTheme
@@ -25,10 +27,18 @@ import java.util.*
 
 const val ZERO_CURRENCY_TAG = "0"
 
+@Composable
+fun BillDetailsRoute(viewModel: BillDetailsViewModel) {
+    BillDetailsScreen(
+        onSendButtonClick = { bill -> viewModel.sendBill(bill) },
+        onHistoryButtonClicked = { /* TODO */ }
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BillDetailsScreen(
-    onSendButtonClick: () -> Unit,
+    onSendButtonClick: (Bill) -> Unit,
     onHistoryButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -84,9 +94,21 @@ fun BillDetailsScreen(
                     ),
                     singleLine = true
                 )
-                InputDate(label = stringResource(R.string.issue_date))
-                InputDate(label = stringResource(R.string.due_date))
-                InputDate(label = stringResource(R.string.delivery_date))
+                var issueDate by remember { mutableStateOf("") }
+                var dueDate by remember { mutableStateOf("") }
+                var deliveryDate by remember { mutableStateOf("") }
+                InputDate(
+                    label = stringResource(R.string.issue_date),
+                    onValueChange = { issueDate = it }
+                )
+                InputDate(
+                    label = stringResource(R.string.due_date),
+                    onValueChange = { dueDate = it }
+                )
+                InputDate(
+                    label = stringResource(R.string.delivery_date),
+                    onValueChange = { deliveryDate = it }
+                )
 
                 var amount by remember { mutableStateOf("") }
                 TextField(
@@ -122,8 +144,32 @@ fun BillDetailsScreen(
                 )
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
 
+                val toast = Toast.makeText(
+                    LocalContext.current,
+                    stringResource(R.string.empty_fields),
+                    Toast.LENGTH_SHORT
+                )
+
                 Button(
-                    onClick = onSendButtonClick,
+                    onClick = {
+                        if (billNumber.isEmpty() || amount.isEmpty() || issueDate.isEmpty() ||
+                            dueDate.isEmpty() || deliveryDate.isEmpty()
+                        ) {
+                            toast.show()
+                            return@Button
+                        }
+                        onSendButtonClick(
+                            Bill(
+                                number = billNumber,
+                                issueDate = issueDate,
+                                deliveryDate = deliveryDate,
+                                dueDate = dueDate,
+                                amount = amount
+                            )
+                        )
+                        billNumber = ""
+                        amount = ""
+                    },
                     modifier = Modifier
                         .fillMaxWidth(0.4f)
                         .height(dimensionResource(id = R.dimen.login_button_height)),
@@ -154,6 +200,7 @@ fun BillDetailsScreen(
 @Composable
 fun InputDate(
     label: String,
+    onValueChange: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val day: Int
@@ -168,7 +215,7 @@ fun InputDate(
     calendar.time = Date()
 
     val date = remember { mutableStateOf("") }
-
+    onValueChange(date.value)
     val datePicker = DatePickerDialog(
         LocalContext.current,
         { _: DatePicker, y: Int, m: Int, d: Int ->

@@ -165,7 +165,8 @@ fun InputField(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
             textColor = MaterialTheme.colorScheme.onSurfaceVariant
         ),
-        modifier = modifier
+        singleLine = true,
+        modifier = modifier,
     )
 }
 

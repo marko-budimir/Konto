@@ -27,7 +27,8 @@ import hr.ferit.markobudimir.konto.navigation.COMPANY_ID_KEY
 import hr.ferit.markobudimir.konto.navigation.CompaniesDestination
 import hr.ferit.markobudimir.konto.navigation.LoginDestination
 import hr.ferit.markobudimir.konto.navigation.NavigationItem
-import hr.ferit.markobudimir.konto.ui.billdetails.BillDetailsScreen
+import hr.ferit.markobudimir.konto.ui.billdetails.BillDetailsRoute
+import hr.ferit.markobudimir.konto.ui.billdetails.BillDetailsViewModel
 import hr.ferit.markobudimir.konto.ui.companies.CompaniesRoute
 import hr.ferit.markobudimir.konto.ui.companies.CompaniesViewModel
 import hr.ferit.markobudimir.konto.ui.home.HomeRoute
@@ -109,7 +110,8 @@ fun MainScreen() {
                     )
                 }
                 composable(NavigationItem.BillingDestination.route) {
-                    BillDetailsScreen({}, {})
+                    val viewModel: BillDetailsViewModel = getViewModel()
+                    BillDetailsRoute(viewModel = viewModel)
                 }
                 composable(NavigationItem.SettingsDestination.route) {
                     val viewModel: SettingsViewModel = getViewModel()
