@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,6 +35,18 @@ import hr.ferit.markobudimir.konto.R
 import hr.ferit.markobudimir.konto.ui.theme.KontoTheme
 import hr.ferit.markobudimir.konto.ui.theme.spacing
 import java.util.Calendar
+
+@Composable
+fun SettingsRoute(
+    viewModel: SettingsViewModel,
+    onNavigateToLogin: () -> Unit
+) {
+    val viewState: SettingsUserDataViewState by viewModel.settingsUserDataViewState.collectAsState()
+    SettingsScreen(
+        viewState = viewState,
+        onLogoutButtonClick = { viewModel.logout(); onNavigateToLogin() }
+    )
+}
 
 @Composable
 fun SettingsScreen(

@@ -6,6 +6,7 @@ import hr.ferit.markobudimir.konto.data.di.firebaseModule
 import hr.ferit.markobudimir.konto.ui.companies.di.companiesModule
 import hr.ferit.markobudimir.konto.ui.home.di.homeModule
 import hr.ferit.markobudimir.konto.ui.login.di.loginModule
+import hr.ferit.markobudimir.konto.ui.settings.di.settingModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -20,7 +21,8 @@ class KontoApp : Application() {
                 loginModule,
                 firebaseModule,
                 homeModule,
-                companiesModule
+                companiesModule,
+                settingModule
             )
         }
     }

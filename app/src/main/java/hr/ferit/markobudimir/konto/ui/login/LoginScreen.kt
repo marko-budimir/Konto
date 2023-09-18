@@ -1,6 +1,5 @@
 package hr.ferit.markobudimir.konto.ui.login
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -118,14 +117,12 @@ fun LoginScreen(
 
         if (viewState.isSuccess) {
             onNavigateToMain()
-            Log.d("LoginScreen", "Login success")
             resetLoginViewState()
         }
         val context = LocalContext.current
         LaunchedEffect(key1 = viewState.isError) {
             viewState.isError?.let { error ->
                 if (error.isNotEmpty() && error.isNotBlank()) {
-                    Log.d("LoginScreen", "Login error")
                     Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
                 }
             }

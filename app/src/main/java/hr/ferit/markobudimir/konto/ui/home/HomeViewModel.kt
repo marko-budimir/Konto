@@ -1,6 +1,5 @@
 package hr.ferit.markobudimir.konto.ui.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hr.ferit.markobudimir.konto.data.repository.UserRepository
@@ -30,11 +29,9 @@ class HomeViewModel(
     private fun getUserData() {
         viewModelScope.launch {
             userRepository.getUserData().collect { user ->
-                Log.d("HomeViewModel", "getUserData: $user")
                 user?.let {
                     _homeUserDataViewState.value = homeMapper.toHomeUserDataViewState(it)
                 }
-
             }
         }
     }

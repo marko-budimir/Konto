@@ -34,8 +34,8 @@ import hr.ferit.markobudimir.konto.ui.home.HomeRoute
 import hr.ferit.markobudimir.konto.ui.home.HomeViewModel
 import hr.ferit.markobudimir.konto.ui.login.LoginRoute
 import hr.ferit.markobudimir.konto.ui.login.LoginViewModel
-import hr.ferit.markobudimir.konto.ui.settings.SettingsScreen
-import hr.ferit.markobudimir.konto.ui.settings.SettingsUserDataViewState
+import hr.ferit.markobudimir.konto.ui.settings.SettingsRoute
+import hr.ferit.markobudimir.konto.ui.settings.SettingsViewModel
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -112,15 +112,10 @@ fun MainScreen() {
                     BillDetailsScreen({}, {})
                 }
                 composable(NavigationItem.SettingsDestination.route) {
-                    SettingsScreen(
-                        viewState = SettingsUserDataViewState(
-                            companyName = "Vers-konto d.o.o.",
-                            address = "Vukovarska ulica 123",
-                            zipCode = "10000 Zagreb",
-                            pin = "123456789",
-                            ownerName = "Marko Budimir",
-                        ),
-                        onLogoutButtonClick = {
+                    val viewModel: SettingsViewModel = getViewModel()
+                    SettingsRoute(
+                        viewModel = viewModel,
+                        onNavigateToLogin = {
                             navController.navigate(LoginDestination.route) {
                                 popUpTo(NavigationItem.HomeDestination.route) {
                                     saveState = true

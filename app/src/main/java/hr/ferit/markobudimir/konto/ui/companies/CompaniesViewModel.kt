@@ -22,7 +22,7 @@ class CompaniesViewModel(
 
     fun getCompanies(path: String) {
         viewModelScope.launch {
-            userRepository.getCustomerObligations(path).collect { companies ->
+            userRepository.getCompanies(path).collect { companies ->
                 Log.d("CompaniesViewModel", "getCompanies: $companies")
                 _companiesViewState.value = companiesMapper.toCompaniesViewState(companies)
             }
