@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface UserRepository {
-    fun getUserData() : Flow<User?>
-    fun getCustomerObligations() : Flow<List<Company>>
-    fun getDebts() : Flow<List<Company>>
+    fun getUserData(): Flow<User?>
+    fun getCustomerObligations(path: String): Flow<List<Company>>
+    fun getDebts(): Flow<List<Company>>
 }

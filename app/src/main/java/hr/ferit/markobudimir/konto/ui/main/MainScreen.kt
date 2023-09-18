@@ -23,14 +23,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import hr.ferit.markobudimir.konto.mock.CompaniesMock
 import hr.ferit.markobudimir.konto.navigation.COMPANY_ID_KEY
 import hr.ferit.markobudimir.konto.navigation.CompaniesDestination
 import hr.ferit.markobudimir.konto.navigation.LoginDestination
 import hr.ferit.markobudimir.konto.navigation.NavigationItem
 import hr.ferit.markobudimir.konto.ui.billdetails.BillDetailsScreen
-import hr.ferit.markobudimir.konto.ui.companies.CompaniesScreen
-import hr.ferit.markobudimir.konto.ui.companies.CompaniesViewState
+import hr.ferit.markobudimir.konto.ui.companies.CompaniesRoute
+import hr.ferit.markobudimir.konto.ui.companies.CompaniesViewModel
 import hr.ferit.markobudimir.konto.ui.home.HomeRoute
 import hr.ferit.markobudimir.konto.ui.home.HomeViewModel
 import hr.ferit.markobudimir.konto.ui.login.LoginRoute
@@ -101,10 +100,10 @@ fun MainScreen() {
                     val viewModel: HomeViewModel = getViewModel()
                     HomeRoute(
                         onNavigateToCustomerObligations = {
-                            navController.navigate(CompaniesDestination.createNavigationRoute("Obveze kupaca"))
+                            navController.navigate(CompaniesDestination.createNavigationRoute("customerObligations"))
                         },
                         onNavigateToDebt = {
-                            navController.navigate(CompaniesDestination.createNavigationRoute("Dug"))
+                            navController.navigate(CompaniesDestination.createNavigationRoute("debt"))
                         },
                         viewModel = viewModel
                     )
@@ -135,10 +134,13 @@ fun MainScreen() {
                     route = CompaniesDestination.route,
                     arguments = listOf(navArgument(COMPANY_ID_KEY) { type = NavType.StringType }),
                 ) {
-                    val companyTitle = it.arguments?.getString("companyId")
-                    CompaniesScreen(
-                        title = companyTitle ?: "",
-                        viewState = CompaniesViewState(CompaniesMock.getCompanies())
+                    val viewModel: CompaniesViewModel = getViewModel()
+                    val companyId = it.arguments?.getString(COMPANY_ID_KEY)
+                    viewModel.getCompanies(companyId ?: "customerObligations")
+
+                    CompaniesRoute(
+                        viewModel = viewModel,
+                        title = if (companyId == "debt") "Dug" else "Obveze kupaca"
                     )
                 }
             }

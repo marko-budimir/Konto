@@ -41,8 +41,31 @@ class UserRepositoryImpl(
         }
     }
 
-    override fun getCustomerObligations(): Flow<List<Company>>  {
-        TODO("Not yet implemented")
+    override fun getCustomerObligations(path: String): Flow<List<Company>> = callbackFlow {
+        val listener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Log.d("CompaniesUserRepositoryImpl", "snapshot: $snapshot")
+                val list = mutableListOf<Company>()
+                for (child in snapshot.children) {
+                    Log.d("CompaniesUserRepositoryImpl", "child: $child")
+                    val name = child.child("tvrtka").value.toString()
+                    Log.d("CompaniesUserRepositoryImpl", "name_onDataChange: $name")
+                    val amount = child.child("debt").value.toString()
+                    val company = Company(name, amount)
+                    list.add(company)
+                }
+                trySend(list)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                trySend(listOf(Company(error.message, "")))
+            }
+        }
+        ref.child(path).addValueEventListener(listener)
+
+        awaitClose {
+            ref.child(path).removeEventListener(listener)
+        }
     }
 
     override fun getDebts(): Flow<List<Company>> {

@@ -12,6 +12,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -20,6 +22,18 @@ import hr.ferit.markobudimir.konto.mock.CompaniesMock
 import hr.ferit.markobudimir.konto.ui.component.CompanyItem
 import hr.ferit.markobudimir.konto.ui.theme.KontoTheme
 import hr.ferit.markobudimir.konto.ui.theme.spacing
+
+@Composable
+fun CompaniesRoute(
+    viewModel: CompaniesViewModel,
+    title: String
+) {
+    val viewState: CompaniesViewState by viewModel.companiesViewState.collectAsState()
+    CompaniesScreen(
+        title = title,
+        viewState = viewState
+    )
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
