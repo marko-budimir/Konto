@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import hr.ferit.markobudimir.konto.R
 import hr.ferit.markobudimir.konto.model.Bill
 import hr.ferit.markobudimir.konto.ui.billdetails.visualtransformation.CurrencyAmountInputVisualTransformation
-import hr.ferit.markobudimir.konto.ui.component.ChangeScreenButton
 import hr.ferit.markobudimir.konto.ui.theme.KontoTheme
 import hr.ferit.markobudimir.konto.ui.theme.spacing
 import java.util.*
@@ -30,8 +29,7 @@ const val ZERO_CURRENCY_TAG = "0"
 @Composable
 fun BillDetailsRoute(viewModel: BillDetailsViewModel) {
     BillDetailsScreen(
-        onSendButtonClick = { bill -> viewModel.sendBill(bill) },
-        onHistoryButtonClicked = { /* TODO */ }
+        onSendButtonClick = { bill -> viewModel.sendBill(bill) }
     )
 }
 
@@ -39,7 +37,6 @@ fun BillDetailsRoute(viewModel: BillDetailsViewModel) {
 @Composable
 fun BillDetailsScreen(
     onSendButtonClick: (Bill) -> Unit,
-    onHistoryButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -187,12 +184,6 @@ fun BillDetailsScreen(
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
             }
         }
-        Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
-
-        ChangeScreenButton(
-            text = stringResource(R.string.history),
-            onClick = onHistoryButtonClicked
-        )
     }
 }
 
@@ -251,6 +242,6 @@ fun InputDate(
 @Composable
 fun BillDetailsScreenPreview() {
     KontoTheme {
-        BillDetailsScreen({}, {})
+        BillDetailsScreen({})
     }
 }

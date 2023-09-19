@@ -19,7 +19,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
@@ -129,24 +128,6 @@ fun SettingsScreen(
                 defaultElevation = dimensionResource(id = R.dimen.settings_card_elevation)
             )
         ) {
-            Box(
-                modifier = Modifier
-                    .padding(MaterialTheme.spacing.small)
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    text = stringResource(R.string.dark_mode),
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.align(Alignment.CenterStart)
-                )
-                var darkMode by remember { mutableStateOf(false) }
-                Switch(
-                    checked = darkMode,
-                    onCheckedChange = { darkMode = !darkMode },
-                    modifier = Modifier.align(Alignment.CenterEnd)
-                )
-            }
-            Divider(color = MaterialTheme.colorScheme.outline)
             var time by remember { mutableStateOf("00:00") }
             var isNotificationActive by remember { mutableStateOf(false) }
             var hasNotificationPermission by remember { mutableStateOf(false) }
