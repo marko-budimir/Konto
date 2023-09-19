@@ -97,23 +97,23 @@ fun LoginScreen(
                 )
             }
         }
-
-        Button(
-            onClick = { onLoginButtonClick(email, password) },
-            modifier = Modifier
-                .fillMaxWidth(0.3f)
-                .height(dimensionResource(id = R.dimen.login_button_height)),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
-            ),
-            shape = MaterialTheme.shapes.large
-        ) {
-            Text(
-                text = stringResource(id = R.string.login_button),
-                style = MaterialTheme.typography.titleMedium
-            )
-        }
+        if (!viewState.isLoading)
+            Button(
+                onClick = { onLoginButtonClick(email, password) },
+                modifier = Modifier
+                    .fillMaxWidth(0.3f)
+                    .height(dimensionResource(id = R.dimen.login_button_height)),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                shape = MaterialTheme.shapes.large
+            ) {
+                Text(
+                    text = stringResource(id = R.string.login_button),
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
 
         if (viewState.isSuccess) {
             onNavigateToMain()

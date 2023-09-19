@@ -1,6 +1,10 @@
 package hr.ferit.markobudimir.konto.ui.settings
 
 import android.app.TimePickerDialog
+import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +20,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,7 +51,15 @@ fun SettingsRoute(
     val viewState: SettingsUserDataViewState by viewModel.settingsUserDataViewState.collectAsState()
     SettingsScreen(
         viewState = viewState,
-        onLogoutButtonClick = { viewModel.logout(); onNavigateToLogin() }
+        onLogoutButtonClick = { viewModel.logout(); onNavigateToLogin() },
+        addNotification = { day, hour, minute ->
+            viewModel.scheduleNotification(
+                day,
+                hour,
+                minute
+            )
+        },
+        removeNotification = { viewModel.cancelNotification() }
     )
 }
 
@@ -52,6 +67,8 @@ fun SettingsRoute(
 fun SettingsScreen(
     viewState: SettingsUserDataViewState,
     onLogoutButtonClick: () -> Unit,
+    addNotification: (Int, Int, Int) -> Unit,
+    removeNotification: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -130,6 +147,30 @@ fun SettingsScreen(
                 )
             }
             Divider(color = MaterialTheme.colorScheme.outline)
+            var time by remember { mutableStateOf("00:00") }
+            var isNotificationActive by remember { mutableStateOf(false) }
+            var hasNotificationPermission by remember { mutableStateOf(false) }
+            val toast = Toast.makeText(
+                LocalContext.current,
+                "Permission denied, you must allow notification permission",
+                Toast.LENGTH_SHORT
+            )
+            val premissionLauncher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.RequestPermission(),
+                onResult = { isGranted ->
+                    hasNotificationPermission = isGranted
+                    if (!isGranted) {
+                        toast.show()
+                    }
+                }
+            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                premissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+            } else
+                hasNotificationPermission = true
+            var expanded by remember { mutableStateOf(false) }
+            var selectedNumber by remember { mutableStateOf(1) }
+            var numberText by remember(selectedNumber) { mutableStateOf(selectedNumber.toString()) }
             Box(
                 modifier = Modifier
                     .padding(MaterialTheme.spacing.small)
@@ -140,11 +181,21 @@ fun SettingsScreen(
                     style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier.align(Alignment.CenterStart)
                 )
-                var darkMode by remember { mutableStateOf(false) }
                 Switch(
-                    checked = darkMode,
-                    onCheckedChange = { darkMode = !darkMode },
-                    modifier = Modifier.align(Alignment.CenterEnd)
+                    checked = isNotificationActive,
+                    onCheckedChange = { isChecked ->
+                        isNotificationActive = isChecked
+                        if (isChecked) {
+                            val day = numberText.toInt()
+                            val hour = time.split(":")[0].toInt()
+                            val minute = time.split(":")[1].toInt()
+                            addNotification(day, hour, minute)
+                        } else {
+                            removeNotification()
+                        }
+                    },
+                    modifier = Modifier.align(Alignment.CenterEnd),
+                    enabled = hasNotificationPermission
                 )
             }
             Box(
@@ -157,12 +208,36 @@ fun SettingsScreen(
                     style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier.align(Alignment.CenterStart)
                 )
-                var date by remember { mutableStateOf("1") }
                 Text(
-                    text = date,
+                    text = numberText,
                     style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.align(Alignment.CenterEnd)
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .clickable { if (!isNotificationActive) expanded = true }
                 )
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    for (i in 1..28) {
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = i.toString(),
+                                    style = MaterialTheme.typography.labelLarge,
+                                )
+                            },
+                            onClick = {
+                                selectedNumber = i
+                                numberText = i.toString()
+                                expanded = false
+                            },
+                            colors = MenuDefaults.itemColors(
+                                textColor = MaterialTheme.colorScheme.onBackground
+                            )
+                        )
+                    }
+                }
             }
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
 
@@ -177,7 +252,11 @@ fun SettingsScreen(
                     modifier = Modifier.align(Alignment.CenterStart)
                 )
 
-                InputTime(Modifier.align(Alignment.CenterEnd))
+                InputTime(
+                    isNotificationActive = isNotificationActive,
+                    onValueChange = { time = it },
+                    Modifier.align(Alignment.CenterEnd)
+                )
             }
         }
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
@@ -203,6 +282,8 @@ fun SettingsScreen(
 
 @Composable
 fun InputTime(
+    isNotificationActive: Boolean,
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val hour: Int
@@ -213,6 +294,7 @@ fun InputTime(
     minute = calendar.get(Calendar.MINUTE)
 
     val time = remember { mutableStateOf("00:00") }
+    onValueChange(time.value)
 
     val timePickerDialog = TimePickerDialog(
         LocalContext.current,
@@ -224,7 +306,7 @@ fun InputTime(
     Text(
         text = time.value,
         style = MaterialTheme.typography.headlineSmall,
-        modifier = modifier.clickable { timePickerDialog.show() }
+        modifier = modifier.clickable { if (!isNotificationActive) timePickerDialog.show() }
     )
 }
 
@@ -240,7 +322,9 @@ fun SettingsScreenPreview() {
                 pin = "123456789",
                 ownerName = "Marko Budimir",
             ),
-            onLogoutButtonClick = {}
+            onLogoutButtonClick = {},
+            addNotification = { _, _, _ -> },
+            removeNotification = {}
         )
     }
 }
